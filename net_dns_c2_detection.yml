@@ -1,0 +1,20 @@
+title: TRANSPORTER Malware DNS Tunneling Detection
+status: experimental
+description: This rule detects potential DNS tunneling C2 activity by identifying excessive DNS queries to the known malicious domain redhunt.net.
+references:
+    - https://zeltser.com/c2-dns-tunneling/
+    - https://patrick-bareiss.com/detect-c2-traffic-over-dns-using-sigma/
+author: Mohamed W.Abdelwahed
+date: 2/2/2026
+tags:
+    - attack.command_and_control
+    - T1071.004
+logsource:
+    category: dns
+detection:
+    selection:
+        parent_domain: 'redhunt.net'
+    condition: selection | count(dns_query) by parent_domain > 500
+falsepositives:
+    - Valid software, which uses dns for transferring data
+level: high
